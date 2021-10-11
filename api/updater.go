@@ -7,9 +7,9 @@ import (
 	"net/http"
 
 	"github.com/g1ibby/daily-tracker/internal/app"
+	"github.com/g1ibby/daily-tracker/internal/config"
 	"github.com/g1ibby/daily-tracker/internal/sheet"
 	"github.com/g1ibby/daily-tracker/internal/telegram"
-	"github.com/g1ibby/daily-tracker/internal/config"
 	"github.com/powerman/structlog"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
@@ -19,7 +19,7 @@ var (
 )
 
 func HandlerUpdater(w http.ResponseWriter, r *http.Request) {
-  cfg, err := config.GetApp()
+	cfg, err := config.GetApp()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,7 +36,7 @@ func HandlerUpdater(w http.ResponseWriter, r *http.Request) {
 	}
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-    log.Fatal(err)
+		log.Fatal(err)
 	}
 
 	var u tb.Update

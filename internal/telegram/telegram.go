@@ -29,18 +29,18 @@ var (
 func New(botToken string, a app.Appl, serverless bool) (*Svc, error) {
 	ctx := context.Background()
 	log := structlog.FromContext(ctx, nil)
-  settings := tb.Settings{
+	settings := tb.Settings{
 		Token:       botToken,
-    Synchronous: true,
-		ParseMode: tb.ModeMarkdown,
+		Synchronous: true,
+		ParseMode:   tb.ModeMarkdown,
 	}
-  if !serverless {
-    settings.Synchronous = false
-    settings.Poller = &tb.LongPoller{Timeout: 10 * time.Second}
-  }
+	if !serverless {
+		settings.Synchronous = false
+		settings.Poller = &tb.LongPoller{Timeout: 10 * time.Second}
+	}
 	b, err := tb.NewBot(settings)
 	if err != nil {
-    return nil, err
+		return nil, err
 	}
 	svc := &Svc{
 		b:   b,
@@ -56,28 +56,28 @@ func New(botToken string, a app.Appl, serverless bool) (*Svc, error) {
 }
 
 func (s *Svc) start(m *tb.Message) {
-  userID := int64(m.Sender.ID)
+	userID := int64(m.Sender.ID)
 
-  s.b.Send(m.Chat, "Welcome")
+	s.b.Send(m.Chat, "Welcome")
 
-  isAuth := s.app.Auth(userID)
-  if !isAuth {
-    s.b.Send(m.Chat, fmt.Sprintf("Set ENV variable *TG_USER_ID* to _%d_", userID))
-    return
-  }
-  _, isSheet, isSecret := s.app.CheckSettings()
-  if !isSheet {
-    s.b.Send(m.Chat, "ENV variables *SHEET_SECRET* or *SHEET_ID* are not set")
-  }
-  if !isSecret {
-    s.b.Send(m.Chat, "ENV variable *API_SECRET* is not set (it's necessary if you use serverless functions)")
-  }
+	isAuth := s.app.Auth(userID)
+	if !isAuth {
+		s.b.Send(m.Chat, fmt.Sprintf("Set ENV variable *TG_USER_ID* to _%d_", userID))
+		return
+	}
+	_, isSheet, isSecret := s.app.CheckSettings()
+	if !isSheet {
+		s.b.Send(m.Chat, "ENV variables *SHEET_SECRET* or *SHEET_ID* are not set")
+	}
+	if !isSecret {
+		s.b.Send(m.Chat, "ENV variable *API_SECRET* is not set (it's necessary if you use serverless functions)")
+	}
 }
 
 func (s *Svc) btnYes(c *tb.Callback) {
-  if !s.app.Auth(int64(c.Sender.ID)) {
-    return
-  }
+	if !s.app.Auth(int64(c.Sender.ID)) {
+		return
+	}
 
 	category, day, err := btnDataParse(c.Data)
 	if err != nil {
@@ -94,9 +94,9 @@ func (s *Svc) btnYes(c *tb.Callback) {
 }
 
 func (s *Svc) btnNo(c *tb.Callback) {
-  if !s.app.Auth(int64(c.Sender.ID)) {
-    return
-  }
+	if !s.app.Auth(int64(c.Sender.ID)) {
+		return
+	}
 
 	category, day, err := btnDataParse(c.Data)
 	if err != nil {

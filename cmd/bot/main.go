@@ -36,7 +36,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-  // run every day
+	// run every day
 	s.Cron("0 10 * * *").Do(func() {
 		a.Shedule(tg.Ask)
 		time.Sleep(2 * time.Second)

@@ -10,19 +10,19 @@ import (
 )
 
 func HandlerScheduler(w http.ResponseWriter, r *http.Request) {
-  cfg, err := config.GetApp()
+	cfg, err := config.GetApp()
 	if err != nil {
 		log.Fatal(err)
 	}
-  if cfg.ApiSecret == "" {
-    log.Warn("ApiSecret is empty", "secret", cfg.ApiSecret)
-    return
-  }
-  secret := string(r.URL.Query().Get("secret"))
-  if cfg.ApiSecret != secret {
-    log.Fatal("wrong secret", "secret", secret)
-    return
-  }
+	if cfg.ApiSecret == "" {
+		log.Warn("ApiSecret is empty", "secret", cfg.ApiSecret)
+		return
+	}
+	secret := string(r.URL.Query().Get("secret"))
+	if cfg.ApiSecret != secret {
+		log.Fatal("wrong secret", "secret", secret)
+		return
+	}
 
 	sh, err := sheet.NewGSheet(cfg.SheetSecret, cfg.SheetID)
 	if err != nil {

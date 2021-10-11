@@ -7,7 +7,7 @@ import (
 )
 
 const (
-  DayLayout = "02/01/2006"
+	DayLayout = "02/01/2006"
 )
 
 type Repo interface {
@@ -60,10 +60,10 @@ func (a *App) SetValue(day time.Time, category string, val bool) error {
 }
 
 func (a *App) Shedule(tgAsk func(user int64, category string, day time.Time)) error {
-  isUserID, isSheet, isSecret := a.CheckSettings()
-  if !isUserID || !isSheet || !isSecret {
-    return nil
-  }
+	isUserID, isSheet, isSecret := a.CheckSettings()
+	if !isUserID || !isSheet || !isSecret {
+		return nil
+	}
 
 	err := a.repo.AddNewDay(time.Now())
 	if err != nil {

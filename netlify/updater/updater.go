@@ -28,10 +28,10 @@ func main() {
 		log.Fatal(err)
 	}
 	a := app.New(sh, cfg.TgUserID, cfg.ApiSecret)
-  tg, err := telegram.New(cfg.TgBotToken, a, true)
-  if err != nil {
-    log.Fatal(err)
-  }
+	tg, err := telegram.New(cfg.TgBotToken, a, true)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	lambda.Start(func(request events.APIGatewayProxyRequest) (err error) {
 		var u tb.Update
