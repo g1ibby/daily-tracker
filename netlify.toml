@@ -1,6 +1,7 @@
 [build]
   command = "make build"
   functions = "functions"
+  publish = ""
 [template.environment]
   API_SECRET = "Secret for call scheduler from github"
   SHEET_SECRET = "Google Sheet secret"
