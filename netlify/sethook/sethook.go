@@ -19,7 +19,7 @@ func main() {
 		return
 	}
 	lambda.Start(func(request events.APIGatewayProxyRequest) (err error) {
-    log.Debug("req", "url", cfg.NetlifyURL)
-		return telegram.SetHookDoamin(cfg.TgBotToken, cfg.NetlifyURL)
+    log.Debug("req", "domain", cfg.Domain)
+		return telegram.SetHookDoamin(cfg.TgBotToken, cfg.Domain)
 	})
 }

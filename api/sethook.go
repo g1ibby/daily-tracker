@@ -13,8 +13,8 @@ func HandlerSetHook(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-  log.Debug("req", "url", cfg.VercelURL)
-	err = telegram.SetHookDoamin(cfg.TgBotToken, "http://"+cfg.VercelURL)
+  log.Debug("req", "domain", cfg.Domain)
+	err = telegram.SetHookDoamin(cfg.TgBotToken, cfg.Domain)
 	if err != nil {
 		log.Fatal(err)
 	}
