@@ -15,11 +15,15 @@ var all = &struct { //nolint:gochecknoglobals // Config is global anyway.
 	SheetID     appcfg.String         `env:"SHEET_ID"`
 	TgBotToken  appcfg.NotEmptyString `env:"TG_BOT_TOKEN"`
 	TgUserID    appcfg.Int64          `env:"TG_USER_ID"`
+	VercelURL   appcfg.String         `env:"VERCEL_URL"`
+	NetlifyURL  appcfg.String         `env:"URL"`
 }{ // Defaults, if any:
 	ApiSecret:   appcfg.MustString(""),
 	SheetSecret: appcfg.MustString(""),
 	SheetID:     appcfg.MustString(""),
 	TgUserID:    appcfg.MustInt64("0"),
+	VercelURL:   appcfg.MustString(""),
+	NetlifyURL:  appcfg.MustString(""),
 }
 
 // ServeConfig contains configuration for subcommand.
@@ -29,6 +33,8 @@ type AppConfig struct {
 	SheetID     string
 	TgBotToken  string
 	TgUserID    int64
+	VercelURL   string
+	NetlifyURL  string
 }
 
 // GetApp validates and returns configuration for subcommand.
@@ -45,6 +51,8 @@ func GetApp() (c *AppConfig, err error) {
 		SheetID:     all.SheetID.Value(&err),
 		TgBotToken:  all.TgBotToken.Value(&err),
 		TgUserID:    all.TgUserID.Value(&err),
+		VercelURL:   all.VercelURL.Value(&err),
+		NetlifyURL:  all.NetlifyURL.Value(&err),
 	}
 	if err != nil {
 		return nil, err

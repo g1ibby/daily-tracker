@@ -3,6 +3,7 @@ package telegram
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -146,4 +147,13 @@ func btnDataParse(data string) (string, time.Time, error) {
 		return "", time.Time{}, err
 	}
 	return words[0], t, nil
+}
+
+func SetHookDoamin(botToken, url string) error {
+	u := fmt.Sprintf("https://api.telegram.org/bot%s/setWebhook?url=%s/api/updater", botToken, url)
+	_, err := http.Get(u)
+	if err != nil {
+		return err
+	}
+	return nil
 }
