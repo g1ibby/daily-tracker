@@ -133,6 +133,7 @@ func (s *Svc) Start() {
 }
 
 func (s *Svc) ProcessUpdate(u tb.Update) {
+  s.log.Info("Processing update", "update_id", u.ID)
 	s.b.ProcessUpdate(u)
 }
 
