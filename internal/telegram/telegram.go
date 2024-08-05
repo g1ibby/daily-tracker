@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+  "sync"
 	"time"
 
 	"github.com/g1ibby/daily-tracker/internal/app"
@@ -19,6 +20,8 @@ type Svc struct {
 	b   *tb.Bot
 	log *structlog.Logger
 	app app.Appl
+  processedIDs map[int]struct{}
+	mu           sync.Mutex
 }
 
 var (
@@ -47,6 +50,7 @@ func New(botToken string, a app.Appl, serverless bool) (*Svc, error) {
 		b:   b,
 		log: log,
 		app: a,
+    processedIDs: make(map[int]struct{}),
 	}
 
 	svc.b.Handle("/start", svc.start)
@@ -133,8 +137,15 @@ func (s *Svc) Start() {
 }
 
 func (s *Svc) ProcessUpdate(u tb.Update) {
-  s.log.Info("Processing update", "update_id", u.ID)
-	s.b.ProcessUpdate(u)
+    s.mu.Lock()
+    defer s.mu.Unlock()
+    if _, exists := s.processedIDs[u.ID]; exists {
+        s.log.Info("Skipping already processed update", "update_id", u.ID)
+        return
+    }
+    s.processedIDs[u.ID] = struct{}{}
+    s.log.Info("Processing update", "update_id", u.ID)
+    s.b.ProcessUpdate(u)
 }
 
 func btnData(category string, day time.Time) string {
